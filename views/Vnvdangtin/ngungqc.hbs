@@ -1,0 +1,175 @@
+<div class="container formqc">
+    <div class="row formqc__tab">
+        <div class="col">
+            <div class="boxunderline" style="display: inline-block;" onclick="quangcaosp()">
+                Thêm sản phẩm quảng cáo
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    
+                    margin: 0 auto;
+                "></div>
+            </div>
+           
+        </div>
+        <div class="col">
+             <div onclick="xemspquangcao()" style="display: inline-block;"  class="boxunderline">
+               Xem sản phẩm quảng cáo
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+           
+        </div>
+        <div class="col">
+             <div style="display: inline-block;"  class="boxunderline">
+                Ngừng quảng cáo sản phẩm
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                    background-color: black;
+                "></div>
+            </div>
+             
+        </div>
+    </div>
+    <form id="formqc" class=" formqc__form" action="/nvdangtin" method="GET">
+        <div class="row"><div class="col formqc__form--tab1">
+            <div class="formqc__searchbox">
+                <input  placeholder="Tìm sản phẩm" class="formqc__searchbox--search" type="search" name="searchbox" id="searchbox"/>
+                <i onclick="searchMH()" class="fas fa-search formqc__searchbox--icon"></i>
+            </div>
+            <div style="margin-top: 17px;" class="formqc__box">
+                <ul id="getProducts" class="formqc__box--ele">
+                    {{#each data}}
+                        <li>Mã mặt hàng: {{this.MaMH}} - Mã đối tác: {{this.MaDT}} <input type="checkbox" value="{{this.MaMH}}-{{this.MaDT}}" /></li>
+                    {{/each}}
+                </ul>
+                <div onclick="clickBT()" class="btn btn-dark formqc__box--bt">Bỏ quảng cáo</div>
+            </div>
+        </div>
+        <div class="col formqc__form--tab2">
+            <div class="formqc__box" style="margin-top: 55px;">
+                <ul id="products" class="formqc__box--ele">
+
+                </ul>
+                <div onclick="clickBT2()" class="btn btn-dark formqc__box--bt">Hủy</div>
+            </div>
+        </div></div>
+        <div onclick="clicksubmit()" style="text-align: center;"><div class="btn btn-dark formqc__box--accept">Xác nhận</div></div>
+
+            
+    </form>
+    <form style="display: none;" id="formsubmitspqc" name="formsubmitspqc" action="./ngungquangqc" method="POST">
+        <input type="text" id="submitSP" name="sanpham"/>
+        <input type="text"id="submitDT" name="MaDoiTac"/>
+    </form>
+    <form style="display: none;" id="redirectform"method="get">
+    </form>
+</div>
+<script>
+        function clickBT() {
+            const ele = document.getElementById('getProducts');
+            const eleLi = ele.getElementsByTagName('li')
+            let arrayLi = []
+            for (let i = 0 ;i<eleLi.length;i++){
+                arrayLi.push(eleLi[i]);
+            }
+            
+            if (arrayLi.length>0){
+                let arrayInput = [];
+                for (let i = 0 ;i<arrayLi.length;i++){
+                    arrayInput.push(arrayLi[i].getElementsByTagName('input'))
+                }
+                let indexAdd = [];
+                arrayInput.map((val,i) => {
+                    if (val[0].checked == true){
+                        indexAdd.push(i);
+                    }
+                })
+                const products = document.getElementById('products');
+                if (indexAdd.length>0){
+                    for (let i = indexAdd.length-1;i>=0;i--){
+                        products.appendChild(eleLi[indexAdd[i]])
+                    }
+                }
+            }
+        }
+
+        function clickBT2() {
+            const ele = document.getElementById('products');
+            const eleLi = ele.getElementsByTagName('li')
+            let arrayLi = []
+            for (let i = 0 ;i<eleLi.length;i++){
+                arrayLi.push(eleLi[i]);
+            }
+            
+            if (arrayLi.length>0){
+                let arrayInput = [];
+                for (let i = 0 ;i<arrayLi.length;i++){
+                    arrayInput.push(arrayLi[i].getElementsByTagName('input'))
+                }
+                let indexAdd = [];
+                arrayInput.map((val,i) => {
+                    if (val[0].checked == false){
+                        indexAdd.push(i);
+                    }
+                })
+                const products1 = document.getElementById('getProducts');
+                if (indexAdd.length>0){
+                    for (let i = indexAdd.length-1;i>=0;i--){
+                        products1.appendChild(eleLi[indexAdd[i]])
+                    }
+                }
+            }
+        }
+
+        function searchMH() {
+            document.getElementById("formqc").submit();
+        }
+
+        function clicksubmit() {
+            Swal.fire({
+            title: 'Xác nhận!',
+            text: "Bạn có bỏ quảng cáo sản phẩm?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có!',
+            cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.value) {
+                    const ele = document.getElementById('products');
+                    const eleLi = ele.getElementsByTagName('li')
+                    let arrayLi = []
+                    for (let i = 0 ;i<eleLi.length;i++){
+                        arrayLi.push(eleLi[i]);
+                    }
+                    if (arrayLi.length>0){
+                        let valueSP = [];
+                        let ValueDT = []
+                        for (let i = 0 ;i<arrayLi.length;i++){
+                            const valueQC = arrayLi[i].getElementsByTagName('input')[0].value.split('-');
+                            valueSP.push(valueQC[0]);
+                            ValueDT.push(valueQC[1]);
+                        }
+                        document.getElementById('submitSP').value = valueSP;
+                        document.getElementById('submitDT').value = ValueDT;
+                        document.getElementById('formsubmitspqc').submit();
+                    }
+                }
+            })
+            
+        }
+        function quangcaosp(){
+            document.getElementById('redirectform').action = '/nvdangtin';
+            document.getElementById('redirectform').submit();
+        }
+        function xemspquangcao(){
+            document.getElementById('redirectform').action = '/nvdangtin/showlistproducts';
+            document.getElementById('redirectform').submit()
+        }
+    </script>

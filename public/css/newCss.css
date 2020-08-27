@@ -1,0 +1,37 @@
+.alert {
+    margin: auto; display: table;
+}
+table {
+    counter-reset: tableCount;     
+  }
+.counterCell:before {              
+    content: counter(tableCount); 
+    counter-increment: tableCount; 
+}
+.formPTH {
+    margin-top: 35px;
+    margin-bottom: 30px;
+    padding-left:60px;
+    padding-right:60px;
+}
+a:hover {
+    color: rgb(148, 153, 224) !important;
+    cursor: pointer !important;
+}
+.rowCTHD {
+    padding: 5px 10px 0px;
+}
+
+.formLPYCNH {
+    margin-top: 35px;
+    margin-bottom: 30px;
+    padding-left:120px;
+    padding-right:120px;
+}
+
+.formComment{
+    margin-top: 35px;
+    margin-bottom: 30px;
+    padding-left:180px;
+    padding-right:180px;
+}

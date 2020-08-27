@@ -1,0 +1,138 @@
+<div class="container formComment">
+    <div class="row formqc__tab">
+        <div class="col">
+            <div onclick="locCommentNav()" class="boxunderline" style="display: inline-block;">
+                Lọc comment
+                <div class="underline" style="
+                    background-color: black;
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="guiQuaTangNav()" style="display: inline-block;">
+                Gửi quả tặng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="nganQuyenGopYNav()" style="display: inline-block;">
+                Ngăn quyền góp ý khách hàng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col formqc__form">
+            <div class="row" style="padding: 0px 20px">
+
+            </div>
+            <div style="height: 320px; overflow: auto; padding-left: 10px; margin-top: 10px;">
+                <h3 style="text-align: center; padding-bottom:10px"> Danh sách comment của khách hàng </h3>
+                <table class="row">
+                    <tr>
+                        <th>STT</th>
+                        <th>Email</th>
+                        <th>Mặt hàng</th>
+                        <th>Nhận xét</th>
+                        <th>Chọn</th>
+                    </tr>
+
+                    <div id="hangTra">
+                        {{#each DSComment}}
+                        <tr>
+                            <td class="counterCell text-center"></td>
+                            <td class="text-center">{{this.Email}}</td>
+                            <td>{{this.TenMH}}</td>
+                            <td class="text-center">{{this.NhanXet}}</td>
+                            <td class="text-center"><input type="checkbox" value="{{this.MaCMT}}" name="checkbox_CMT" />
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </div>
+                </table>
+            </div>
+            <hr class="line">
+            <div style="text-align: center;">
+                <button class="btn btn-dark formqc__box--accept" onclick="phanLoaiCommentTot()">Comment tốt</button>
+                <button class="btn btn-danger formqc__box--accept" onclick="phanLoaiCommentXau()">Comment xấu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function phanLoaiCommentTot() {
+        let stringComment = '';
+        $("input:checkbox[name=checkbox_CMT]:checked").each(function () {
+            stringComment = stringComment + $(this).val() + ' ';
+        });
+        if (stringComment == '') {
+            Swal.fire({
+                title: 'Vui lòng chọn ít nhất một comment'
+            })
+        } else {
+            $.ajax({
+                url: '/nvbanhang/phanloaicommenttot',
+                type: 'POST',
+                data: {
+                    stringComment: stringComment
+                },
+                success: function () {
+                    Swal.fire({
+                        title: 'Phân loại comment tốt thành công'
+                    }).then(() => {
+                        location.reload();
+                    })
+                }
+            })
+        }
+    }
+    function phanLoaiCommentXau() {
+        let stringComment = '';
+        $("input:checkbox[name=checkbox_CMT]:checked").each(function () {
+            stringComment = stringComment + $(this).val() + ' ';
+        });
+        if (stringComment == '') {
+            Swal.fire({
+                title: 'Vui lòng chọn ít nhất một comment'
+            })
+        } else {
+            $.ajax({
+                url: '/nvbanhang/phanloaicommentxau',
+                type: 'POST',
+                data: {
+                    stringComment: stringComment
+                },
+                success: function () {
+                    Swal.fire({
+                        title: 'Phân loại comment xấu thành công'
+                    }).then(() => {
+                        location.reload();
+                    })
+                }
+            })
+        }
+    }
+    function locCommentNav() {
+        location.href = '/nvbanhang/loccomment';
+    }
+    function guiQuaTangNav() {
+        location.href = '/nvbanhang/guiquatang';
+    }
+    function nganQuyenGopYNav() {
+        location.href = '/nvbanhang/nganquyengopykhachhang';
+    }
+</script>

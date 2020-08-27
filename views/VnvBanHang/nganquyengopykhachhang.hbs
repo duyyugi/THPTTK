@@ -1,0 +1,111 @@
+<div class="container formComment">
+    <div class="row formqc__tab">
+        <div class="col">
+            <div onclick="locCommentNav()" class="boxunderline" style="display: inline-block;">
+                Lọc comment
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="guiQuaTangNav()" style="display: inline-block;">
+                Gửi quả tặng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="nganQuyenGopYNav()" style="display: inline-block;">
+                Ngăn quyền góp ý khách hàng
+                <div class="underline" style="
+                    background-color: black;
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col formqc__form">
+            <div class="row" style="padding: 0px 20px">
+
+            </div>
+            <div style="height: 320px; overflow: auto; padding-left: 10px; margin-top: 10px;">
+                <h3 style="text-align: center; padding-bottom:10px"> Danh sách khách hàng đã comment </h3>
+                <table class="row">
+                    <tr>
+                        <th>STT</th>
+                        <th>Email</th>
+                        <th>Họ Tên</th>
+                        <th>Địa chỉ</th>
+                        <th>Chọn</th>
+                    </tr>
+
+                    <div id="hangTra">
+                        {{#each DSKhacHangDaCMT}}
+                        <tr>
+                            <td class="counterCell text-center"></td>
+                            <td class="text-center">{{this.Email}}</td>
+                            <td>{{this.HoTen}}</td>
+                            <td class="text-center">{{this.DiaChi}}</td>
+                            <td class="text-center"><input type="checkbox" value="{{this.Email}}" name="checkbox_KHCMT" />
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </div>
+                </table>
+            </div>
+            <hr class="line">
+            <div style="text-align: center;">
+                <button class="btn btn-dark formqc__box--accept" onclick="camQuyenComment()">Cấm Quyền Comment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function camQuyenComment() {
+        let stringKHComment = '';
+        $("input:checkbox[name=checkbox_KHCMT]:checked").each(function () {
+            stringKHComment = stringKHComment + $(this).val() + ' ';
+        });
+        if (stringKHComment == '') {
+            Swal.fire({
+                title: 'Vui lòng chọn ít nhất một khách hàng'
+            })
+        } else {
+            $.ajax({
+                url: '/nvbanhang/camquyencomment',
+                type: 'POST',
+                data: {
+                    stringKHComment: stringKHComment
+                },
+                success: function () {
+                    Swal.fire({
+                        title: 'Cấm quyền comment thành công'
+                    }).then(() => {
+                        location.reload();
+                    })
+                }
+            })
+        }
+    }
+    function locCommentNav() {
+        location.href = '/nvbanhang/loccomment';
+    }
+    function guiQuaTangNav() {
+        location.href = '/nvbanhang/guiquatang';
+    }
+    function nganQuyenGopYNav() {
+        location.href = '/nvbanhang/nganquyengopykhachhang';
+    }
+</script>

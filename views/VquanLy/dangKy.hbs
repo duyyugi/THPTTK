@@ -1,0 +1,55 @@
+<!-- Register Section Begin -->
+<div class="register-login-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="register-form">
+                    <h2>Đăng ký</h2>
+                    <form action="/quanly/dang-ky" method="POST">
+                        <div class="group-input">
+                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" id="username" name="username">
+                        </div>
+                        <div class="group-input">
+                            <label for="pass">Mật khẩu</label>
+                            <input type="text" name="passRegister">
+                        </div>
+                        <div class="group-input">
+                            <label for="con-pass">Xác nhận mật khẩu</label>
+                            <input type="text" name="repPassRegister">
+                        </div>
+                        <div class="group-input">
+                            <label for="con-pass">Họ tên nhân viên</label>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="group-input">
+                            <label for="con-pass">Vai trò</label>
+                            <select name="role">
+                                <option value="NV Bán hàng">NV Bán hàng</option>
+                                <option value="NV Đăng tin">NV Đăng tin</option>
+                                <option value="Thủ quỹ">Thủ quỹ</option>
+                            </select>
+                        </div>
+                        {{#ifCond status 1}}
+                        <div class="alert alert-danger" role="alert">
+                            <span>Tên đăng nhập đã tồn tại</span>
+                        </div>
+                        {{/ifCond}}
+                        {{#ifCond status 2}}
+                        <div class="col-lg-6 offset-lg-3 alert alert-danger" role="alert">
+                            <span>Mật khẩu nhập lại không khớp</span>
+                        </div>
+                        {{/ifCond}}
+                        {{#ifCond status 3}}
+                        <div class="col-lg-6 offset-lg-3 alert alert-success" role="alert">
+                            <span>Đăng ký thành công</span>
+                        </div>
+                        {{/ifCond}}
+                        <button type="submit" class="site-btn register-btn">Đăng ký</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Register Form Section End -->

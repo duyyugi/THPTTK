@@ -1,0 +1,70 @@
+<div class="container formqc">
+    <div class="row formqc__tab">
+        <div class="col">
+            <div class="boxunderline" style="display: inline-block;" onclick="quangcaosp()">
+                Thêm sản phẩm quảng cáo
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    
+                    margin: 0 auto;
+                "></div>
+            </div>
+           
+        </div>
+        <div class="col">
+             <div style="display: inline-block;"  class="boxunderline">
+               Xem sản phẩm quảng cáo
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                    background-color: black;
+                "></div>
+            </div>
+           
+        </div>
+        <div class="col">
+             <div onclick="ngungquangcaosp()" style="display: inline-block;"  class="boxunderline">
+                Ngừng quảng cáo sản phẩm
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+             
+        </div>
+    </div>
+    
+            <table class="row" class="listitemspqc" style="padding: 0 35px;">
+                <tr>
+                    <th>Mã đối tác</th>
+                    <th>Mã mặt hàng</th>
+                    <th>Ngày đăng quảng cáo</th>
+                </tr>
+                {{#each data}}
+                  <tr >
+                    <td style="text-align:center">{{this.MaDT}}</td>
+                    <td style="text-align:center">{{this.MaMH}}</td>
+                    <td style="text-align:center">{{this.NgayDangQC}}</td>
+                </tr>
+                {{/each}}
+            </table>
+
+
+    <form style="display: none;" id="redirectform"method="get">
+    </form>
+</div>
+<script>
+        
+        function quangcaosp(){
+            document.getElementById('redirectform').action = '/nvdangtin';
+            document.getElementById('redirectform').submit();
+        }
+        
+        function ngungquangcaosp(){
+            document.getElementById('redirectform').action = '/nvdangtin/ngungquangqc';
+            document.getElementById('redirectform').submit();
+        }
+    </script>

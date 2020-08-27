@@ -1,0 +1,155 @@
+<div class="container formqc">
+    <div class="row formqc__tab">
+        {{#ifCond cachthucTT 0}}
+        <div class="col">
+            <div onclick="traCuuHoaDon()" style="display: inline-block;">
+                Tra cứu hóa đơn
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    background-color: black;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhToanTienMat()" style="display: inline-block;">
+                Thanh toán bằng tiền mặt
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhtoanThe()" style="display: inline-block;">
+                Thanh toán bằng thẻ
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        {{/ifCond}}
+        {{#ifCond cachthucTT 1}}
+        <div class="col">
+            <div onclick="traCuuHoaDon()" style="display: inline-block;">
+                Tra cứu hóa đơn
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhToanTienMat()" style="display: inline-block;">
+                Thanh toán bằng tiền mặt
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    background-color: black;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhtoanThe()" style="display: inline-block;">
+                Thanh toán bằng thẻ
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        {{/ifCond}}
+        {{#ifCond cachthucTT 2}}
+        <div class="col">
+            <div onclick="traCuuHoaDon()" style="display: inline-block;">
+                Tra cứu hóa đơn
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhToanTienMat()" style="display: inline-block;">
+                Thanh toán bằng tiền mặt
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="thanhtoanThe()" style="display: inline-block;">
+                Thanh toán bằng thẻ
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    background-color: black;
+                    margin: 0 auto;"></div>
+            </div>
+        </div>
+        {{/ifCond}}
+    </div>
+
+
+    <div class=" formqc__form">
+        <div class="row">
+            <div class="col formqc__form--tab1">
+                <div class="input-group mb-3">
+                    <select class="custom-select" id="trangthaiHD">
+                        {{#if status}}
+                        <option value="chuathanhtoan">Hóa đơn chưa thanh toán</option>
+                        <option value="dathanhtoan" selected>Hóa đơn đã thanh toán</option>
+                        {{else}}
+                        <option selected value="chuathanhtoan">Hóa đơn chưa thanh toán</option>
+                        <option value="dathanhtoan">Hóa đơn đã thanh toán</option>
+                        {{/if}}
+                    </select>
+                    <input type="text" class="form-control" id="maHoaDon" placeholder="Nhập mã hóa đơn">
+                    <button class="btn btn-dark" type="button" onclick="timKiemHoaDon()">Tìm kiếm</button>
+                </div>
+                <div class="formqc__box" style="margin-top: 17px">
+                    <div style="height: 380px; overflow: auto; padding-left: 25px; margin-top: 15px;">
+                        <table class="row">
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã HD</th>
+                                <th>Mã KH</th>
+                                <th>Mã NVGH</th>
+                                <th>Mã NVBH</th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                            {{#each HoaDon}}
+                            <tr>
+                                <td class="counterCell text-center"></td>
+                                <td>{{this.MaHD}}</td>
+                                <td>{{this.MaKH}}</td>
+                                <td>{{this.NVGiaoHang}}</td>
+                                <td>{{this.NVBanHang}}</td>
+                                <td><span>{{this.TongTien}}</span></td>
+                                <td><a onclick="chiTietHoaDon({{this.MaHD}},{{../cachthucTT}})">chi tiết</a></td>
+                            </tr>
+                            {{/each}}
+                        </table>
+                    </div>
+                    <div hidden>
+                        <input id="cachthucTTinput" value="{{cachthucTT}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col formqc__form--tab2">
+                <div>
+                    <span class="input-group-text"
+                        style="height 38px; display:table; margin-left:auto; margin-right:auto; width:100%">Chi tiết hóa
+                        đơn</span>
+                </div>
+                <div class="formqc__box" style="margin-top: 17px">
+                    <div style="height: 395px; overflow: auto; padding-right:15px" id="formCTDH">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

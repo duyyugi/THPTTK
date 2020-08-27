@@ -1,0 +1,183 @@
+<div class="container formPTH">
+    <div class="row formqc__tab">
+        <div class="col">
+            <div onclick="lapPhieuYCauNhapHang()" class="boxunderline" style="display: inline-block;">
+                Lập phiếu yêu cầu nhập hàng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="traCuuMatHang()" style="display: inline-block;">
+                Tra cứu mặt hàng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div onclick="lapPhieuTraHang()" style="display: inline-block;">
+                Lập phiếu trả hàng
+                <div class="underline" style="
+                    background-color: black;
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+        </div>
+        <div class="col">
+            <div onclick="lapPhieuNhapHang()" style="display: inline-block;">
+                Lập phiếu nhập hàng
+                <div class="underline" style="
+                    width: 100%;
+                    height: 2px;
+                    margin: 0 auto;
+                "></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col formqc__form">
+            <div class="row" style="padding: 0px 20px">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Số lượng trả lại tối thiểu</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group-prepend">
+                                <input id="soLuongTT" type="number" class="form-control" style="text-align: center;"
+                                    value="{{soLuongTT}}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nhà cung cấp</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="input-group-prepend">
+                                <select id="maNCCPBH" class="custom-select">
+                                    <option selected value="{{NCCHienTai.MaNCC}}">{{NCCHienTai.TenNCC}}</option>
+                                    {{#each DSnhaCungCap}}
+                                    <option value="{{this.MaNCC}}">{{this.TenNCC}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="input-group-append">
+                        <button class="btn btn-dark" type="button" onclick="timKiemTheoSLNCC()">Tìm
+                            kiếm</button>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 320px; overflow: auto; padding-left: 10px; margin-top: 10px;">
+                <table class="row">
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã MH</th>
+                        <th>Tên mặt hàng</th>
+                        <th style="text-align: center;">Số lượng Trả</th>
+                        <th>Nhà Cung Cấp</th>
+                        <th>Lý do</th>
+                        <th>Chọn</th>
+                    </tr>
+
+                    <div id="hangTra">
+                        {{#each DSmatHangTra}}
+                        <tr>
+                            <td class="counterCell text-center"></td>
+                            <td class="text-center">{{this.MaMH}}</td>
+                            <td>{{this.TenMH}}</td>
+                            <td class="text-center">{{this.SoLuongTraLai}}</td>
+                            <td>{{this.TenNCC}}</td>
+                            <td style="width:30%"><input style="width:100%" id="{{this.MaMH}}"></td>
+                            <td class="text-center"><input type="checkbox" value="{{this.MaMH}}" name="checkbox_MH"
+                                    class="checkbox_hangTra" /></td>
+                        </tr>
+                        {{/each}}
+                    </div>
+                </table>
+            </div>
+            <hr class="line">
+            <div style="text-align: center;">
+                <button class="btn btn-dark formqc__box--accept" onclick="lapPTH()">Lập phiếu trả hàng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function timKiemTheoSLNCC() {
+        let soLuong = $('#soLuongTT').val();
+        let maNCC = $('#maNCCPBH').val();
+        location.href = '/nvbanhang/lapphieutrahang?soLuong=' + soLuong + '&maNCC=' + maNCC;
+    }
+    function lapPTH() {
+        let DSMatHang = [];
+        let chuoiDSMatHang = '';
+        let chuoiLyDo = '';
+        let MaNCC = $('#maNCCPBH').val();
+        $("input:checkbox[name=checkbox_MH]:checked").each(function () {
+            DSMatHang.push($(this).val());
+            chuoiDSMatHang = chuoiDSMatHang + $(this).val() + ' ';
+        });
+        for (let i in DSMatHang) {
+            let inputLyDo = '#' + DSMatHang[i];
+            if ($.trim($(inputLyDo).val()) == '') {
+                Swal.fire({
+                    title: 'Lý do không được để trống'
+                })
+                return false;
+            } else {
+                chuoiLyDo = chuoiLyDo + $(inputLyDo).val() + './';
+            }
+        }
+        $.ajax({
+            url: '/nvbanhang/lapphieutrahang',
+            type: 'POST',
+            data: {
+                chuoiDSMatHang: chuoiDSMatHang,
+                MaNCC: MaNCC,
+                chuoiLyDo: chuoiLyDo
+            },
+            success: function (result) {
+                if (result.status == 1) {
+                    Swal.fire({
+                        title: 'Lập phiếu trả hàng thành công'
+                    }).then(() => {
+                        location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Vui lòng chọn mặt hàng cần trả'
+                    })
+                }
+
+            }
+        })
+    }
+    function lapPhieuYCauNhapHang(){
+        location.href="/nvbanhang"
+    }
+    function lapPhieuTraHang(){
+        location.href = "/nvbanhang/lapphieutrahang"
+    }
+</script>
